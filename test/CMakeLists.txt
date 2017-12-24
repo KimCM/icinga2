@@ -20,13 +20,30 @@ set(Boost_USE_STATIC_LIBS OFF)
 include(BoostTestTargets)
 
 set(base_test_SOURCES
-  base-array.cpp base-base64.cpp base-convert.cpp base-dictionary.cpp base-fifo.cpp
-  base-json.cpp base-match.cpp base-netstring.cpp base-object.cpp
-  base-serialize.cpp base-shellescape.cpp base-stacktrace.cpp
-  base-stream.cpp base-string.cpp base-timer.cpp base-type.cpp
-  base-value.cpp config-ops.cpp icinga-checkresult.cpp icinga-legacytimeperiod.cpp
-  icinga-macros.cpp icinga-notification.cpp
-  icinga-perfdata.cpp remote-url.cpp
+  base-array.cpp
+  base-base64.cpp
+  base-convert.cpp
+  base-dictionary.cpp
+  base-fifo.cpp
+  base-json.cpp
+  base-match.cpp
+  base-netstring.cpp
+  base-object.cpp
+  base-serialize.cpp
+  base-shellescape.cpp
+  base-stacktrace.cpp
+  base-stream.cpp
+  base-string.cpp
+  base-timer.cpp
+  base-type.cpp
+  base-value.cpp
+  config-ops.cpp
+  icinga-checkresult.cpp
+  icinga-legacytimeperiod.cpp
+  icinga-macros.cpp
+  icinga-notification.cpp
+  icinga-perfdata.cpp
+  remote-url.cpp
 )
 
 if(ICINGA2_UNITY_BUILD)
@@ -123,6 +140,7 @@ add_boost_test(base
 
 if(ICINGA2_WITH_LIVESTATUS)
   set(livestatus_test_SOURCES
+    livestatus-fixture.cpp
     livestatus.cpp
   )
 
@@ -131,7 +149,7 @@ if(ICINGA2_WITH_LIVESTATUS)
   endif()
 
   add_boost_test(livestatus
-    SOURCES test-runner.cpp livestatus-fixture.cpp ${livestatus_test_SOURCES}
+    SOURCES test-runner.cpp ${livestatus_test_SOURCES}
     LIBRARIES base config icinga livestatus
     DEPENDENCIES methods
     TESTS livestatus/hosts livestatus/services
@@ -139,7 +157,8 @@ if(ICINGA2_WITH_LIVESTATUS)
 endif()
 
 set(icinga_checkable_test_SOURCES
-    icinga-checkable-flapping.cpp
+  icinga-checkable-fixture.cpp
+  icinga-checkable-flapping.cpp
 )
 
 if(ICINGA2_UNITY_BUILD)
@@ -147,7 +166,7 @@ if(ICINGA2_UNITY_BUILD)
 endif()
 
 add_boost_test(icinga_checkable
-  SOURCES test-runner.cpp icinga-checkable-test.cpp ${icinga_checkable_test_SOURCES}
+  SOURCES test-runner.cpp ${icinga_checkable_test_SOURCES}
   LIBRARIES base config icinga cli
   TESTS icinga_checkable_flapping/host_not_flapping
         icinga_checkable_flapping/host_flapping

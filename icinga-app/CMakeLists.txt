@@ -21,7 +21,12 @@ else()
   set(WindowsSources "")
 endif()
 
-add_executable(icinga-app icinga.cpp ${WindowsSources})
+set(icinga_app_SOURCES
+  icinga.cpp
+  ${WindowsSources}
+)
+
+add_executable(icinga-app ${icinga_app_SOURCES})
 
 include_directories(${Boost_INCLUDE_DIRS})
 target_link_libraries(icinga-app ${Boost_LIBRARIES} base config cli)

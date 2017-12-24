@@ -24,7 +24,7 @@ if(PostgreSQL_FOUND)
   include_directories(${PostgreSQL_INCLUDE_DIRS})
 
   set(db_ido_pgsql_SOURCES
-    idopgsqlconnection.cpp idopgsqlconnection.thpp
+    idopgsqlconnection.cpp idopgsqlconnection.hpp idopgsqlconnection.thpp
   )
 
   if(ICINGA2_UNITY_BUILD)
