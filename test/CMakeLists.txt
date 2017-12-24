@@ -173,4 +173,3 @@ add_boost_test(icinga_checkable
         icinga_checkable_flapping/host_flapping_recover
         icinga_checkable_flapping/host_flapping_docs_example
 )
-

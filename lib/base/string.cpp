@@ -21,6 +21,9 @@
 #include "base/value.hpp"
 #include "base/primitivetype.hpp"
 #include "base/dictionary.hpp"
+#include <boost/algorithm/string/case_conv.hpp>
+#include <boost/algorithm/string/trim.hpp>
+#include <boost/algorithm/string/split.hpp>
 #include <ostream>
 
 using namespace icinga;
@@ -50,5 +53,33 @@ String& String::operator+=(const Value& rhs)
 {
 	m_Data += static_cast<String>(rhs);
 	return *this;
+}
+
+std::vector<String> String::Split(const char *separators) const
+{
+	std::vector<String> result;
+	boost::algorithm::split(result, m_Data, boost::is_any_of(separators));
+	return result;
+}
+
+String String::Trim(void) const
+{
+	String t = m_Data;
+	boost::algorithm::trim(t);
+	return t;
+}
+
+String String::ToLower(void) const
+{
+	String t = m_Data;
+	boost::algorithm::to_lower(t);
+	return t;
+}
+
+String String::ToUpper(void) const
+{
+	String t = m_Data;
+	boost::algorithm::to_upper(t);
+	return t;
 }
 

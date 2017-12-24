@@ -22,9 +22,6 @@
 
 #include "base/i2-base.hpp"
 #include "base/object.hpp"
-#include <boost/algorithm/string/case_conv.hpp>
-#include <boost/algorithm/string/trim.hpp>
-#include <boost/algorithm/string/split.hpp>
 #include <boost/range/iterator.hpp>
 #include <string.h>
 #include <functional>
@@ -71,7 +68,7 @@ public:
 	{ }
 
 	String(std::string&& data)
-		: m_Data(data)
+		: m_Data(std::move(data))
 	{ }
 
 	String(String::SizeType n, char c)
@@ -239,44 +236,22 @@ public:
 		return m_Data.substr(first, len);
 	}
 
-	std::vector<String> Split(const char *separators) const
-	{
-		std::vector<String> result;
-		boost::algorithm::split(result, m_Data, boost::is_any_of(separators));
-		return result;
-	}
+	std::vector<String> Split(const char *separators) const;
 
 	void Replace(SizeType first, SizeType second, const String& str)
 	{
 		m_Data.replace(first, second, str);
 	}
 
-	String Trim(void) const
-	{
-		String t = m_Data;
-		boost::algorithm::trim(t);
-		return t;
-	}
+	String Trim(void) const;
 
-	String ToLower(void) const
-	{
-		String t = m_Data;
-		boost::algorithm::to_lower(t);
-		return t;
-	}
+	String ToLower(void) const;
 
-	String ToUpper(void) const
-	{
-		String t = m_Data;
-		boost::algorithm::to_upper(t);
-		return t;
-	}
+	String ToUpper(void) const;
 
 	String Reverse(void) const
 	{
-		String t = m_Data;
-		std::reverse(t.m_Data.begin(), t.m_Data.end());
-		return t;
+		return String(m_Data.rbegin(), m_Data.rend());
 	}
 
 	void Append(int count, char ch)

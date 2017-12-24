@@ -15,13 +15,16 @@
 # along with this program; if not, write to the Free Software Foundation
 # Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 
-target_link_libraries(check_nscp_api ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_SYSTEM_LIBRARY} base remote)
+add_executable(check_nscp_api check_nscp_api.cpp)
+
+target_link_libraries( check_nscp_api ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_SYSTEM_LIBRARY} base remote)
 
 set_target_properties(
   check_nscp_api PROPERTIES
   INSTALL_RPATH ${CMAKE_INSTALL_FULL_LIBDIR}/icinga2
   DEFINE_SYMBOL I2_PLUGINS_BUILD
-  FOLDER Plugins)
+  FOLDER Plugins
+)
 
 # Prefer the PluginDir constant which is set to /sbin on Windows
 

@@ -58,6 +58,10 @@ set_target_properties (
   VERSION ${SPEC_VERSION}
 )
 
+if(ICINGA2_PCH_BUILD)
+  target_precompiled_header(db_ido pch.hpp REUSE icinga)
+endif()
+
 install(
   TARGETS db_ido
   RUNTIME DESTINATION ${CMAKE_INSTALL_SBINDIR}

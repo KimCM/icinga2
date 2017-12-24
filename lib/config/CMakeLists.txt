@@ -54,7 +54,7 @@ endif()
 
 add_library(config SHARED ${config_SOURCES})
 
-target_link_libraries(config ${Boost_LIBRARIES} base) 
+target_link_libraries(config ${Boost_LIBRARIES} base)
 
 set_target_properties (
   config PROPERTIES
@@ -63,6 +63,10 @@ set_target_properties (
   FOLDER Lib
   VERSION ${SPEC_VERSION}
 )
+
+if(ICINGA2_PCH_BUILD)
+  target_precompiled_header(config pch.hpp REUSE base)
+endif()
 
 install(
   TARGETS config

@@ -17,10 +17,14 @@
 
 cmake_minimum_required(VERSION 2.6)
 set(BOOST_MIN_VERSION "1.48.0")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-project(icinga2)
+project(icinga2 C CXX)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/third-party/cmake")
+
+include(PCH)
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING
@@ -53,6 +57,7 @@ set(ICINGA2_RUNDIR "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/run" CACHE STRING "/run 
 set(ICINGA2_PLUGINDIR "/usr/lib/nagios/plugins" CACHE STRING "Path for the check plugins")
 set(ICINGA2_GIT_VERSION_INFO ON CACHE BOOL "Whether to use git describe")
 set(ICINGA2_UNITY_BUILD ON CACHE BOOL "Whether to perform a unity build")
+set(ICINGA2_PCH_BUILD ON CACHE BOOL "Whether to use pre-compiled headers")
 set(ICINGA2_LTO_BUILD OFF CACHE BOOL "Whether to use LTO")
 
 site_name(ICINGA2_BUILD_HOST_NAME)
@@ -299,16 +304,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
   if("${CMAKE_CXX_COMPILER_VERSION}" VERSION_LESS "4.7.0")
     message(FATAL_ERROR "Your version of GCC (${CMAKE_CXX_COMPILER_VERSION}) is too old for building Icinga 2 (GCC >= 4.7.0 is required).")
-  endif()
-endif()
-
-if(NOT MSVC)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-
-  check_cxx_source_compiles("class Base { public: virtual void test(void) { } }; class Derived : public Base { virtual void test(void) override { } }; int main(){}" CXX_FEATURE_OVERRIDE)
-
-  if(NOT CXX_FEATURE_OVERRIDE)
-    add_definitions("-Doverride=")
   endif()
 endif()
 

@@ -37,6 +37,10 @@ set_target_properties (
   VERSION ${SPEC_VERSION}
 )
 
+if(ICINGA2_PCH_BUILD)
+  target_precompiled_header(demo REUSE icinga)
+endif()
+
 install(
   TARGETS demo
   RUNTIME DESTINATION ${CMAKE_INSTALL_SBINDIR}

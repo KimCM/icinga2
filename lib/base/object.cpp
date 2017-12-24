@@ -26,6 +26,7 @@
 #include "base/logger.hpp"
 #include "base/exception.hpp"
 #include <boost/lexical_cast.hpp>
+#include <boost/thread/recursive_mutex.hpp>
 
 using namespace icinga;
 
@@ -53,6 +54,24 @@ Object::Object(void)
 Object::~Object(void)
 {
 	delete reinterpret_cast<boost::recursive_mutex *>(m_Mutex);
+}
+
+void *Object::AllocateLockedMutex(void)
+{
+	boost::recursive_mutex *mtx = new boost::recursive_mutex();
+	mtx->lock();
+	return mtx;
+}
+
+void Object::LockMutex(void) const
+{
+	boost::recursive_mutex *mtx = reinterpret_cast<boost::recursive_mutex *>(m_Mutex);
+	mtx->lock();
+}
+
+void Object::UnlockMutex(void) const
+{
+	reinterpret_cast<boost::recursive_mutex *>(m_Mutex)->unlock();
 }
 
 /**
@@ -261,3 +280,9 @@ INITIALIZE_ONCE([]() {
 });
 #endif /* I2_LEAK_DEBUG */
 
+
+void icinga::DefaultObjectFactoryCheckArgs(const std::vector<Value>& args)
+{
+	if (!args.empty())
+		BOOST_THROW_EXCEPTION(std::invalid_argument("Constructor does not take any arguments."));
+}

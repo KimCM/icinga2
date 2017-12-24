@@ -73,6 +73,10 @@ set_target_properties (
   VERSION ${SPEC_VERSION}
 )
 
+if(ICINGA2_PCH_BUILD)
+  target_precompiled_header(cli pch.hpp REUSE remote)
+endif()
+
 install(
   TARGETS cli
   RUNTIME DESTINATION ${CMAKE_INSTALL_SBINDIR}

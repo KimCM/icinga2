@@ -71,8 +71,7 @@ public:
 		while (likely(!__sync_bool_compare_and_swap(&object->m_Mutex, I2MUTEX_UNLOCKED, I2MUTEX_LOCKED))) {
 #endif /* _WIN32 */
 			if (likely(object->m_Mutex > I2MUTEX_LOCKED)) {
-				boost::recursive_mutex *mtx = reinterpret_cast<boost::recursive_mutex *>(object->m_Mutex);
-				mtx->lock();
+				object->LockMutex();
 
 				return;
 			}
@@ -81,8 +80,8 @@ public:
 			it++;
 		}
 
-		boost::recursive_mutex *mtx = new boost::recursive_mutex();
-		mtx->lock();
+		void *mtx = Object::AllocateLockedMutex();
+
 #ifdef _WIN32
 #	ifdef _WIN64
 		InterlockedCompareExchange64((LONGLONG *)&object->m_Mutex, reinterpret_cast<LONGLONG>(mtx), I2MUTEX_LOCKED);
@@ -143,7 +142,7 @@ public:
 #endif /* I2_DEBUG */
 
 		if (m_Locked) {
-			reinterpret_cast<boost::recursive_mutex *>(m_Object->m_Mutex)->unlock();
+			m_Object->UnlockMutex();
 			m_Locked = false;
 		}
 	}
