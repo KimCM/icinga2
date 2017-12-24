@@ -19,24 +19,10 @@ set(mmatch_SOURCES
   mmatch.c mmatch.h
 )
 
-add_library(mmatch SHARED ${mmatch_SOURCES})
+add_library(mmatch STATIC ${mmatch_SOURCES})
 
 set_target_properties(
   mmatch PROPERTIES
   DEFINE_SYMBOL I2_MMATCH_BUILD
   FOLDER Lib
-  VERSION ${SPEC_VERSION}
 )
-
-install(
-  TARGETS mmatch
-  RUNTIME DESTINATION ${CMAKE_INSTALL_SBINDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/icinga2
-)
-
-if(APPLE)
-  install(
-    TARGETS mmatch
-    LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR}/icinga-studio.app/Contents
-  )
-endif()

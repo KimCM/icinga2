@@ -19,28 +19,14 @@ set(socketpair_SOURCES
   socketpair.c socketpair.h
 )
 
-add_library(socketpair SHARED ${socketpair_SOURCES})
+add_library(socketpair STATIC ${socketpair_SOURCES})
 
 set_target_properties (
   socketpair PROPERTIES
   DEFINE_SYMBOL I2_SOCKETPAIR_BUILD
   FOLDER Lib
-  VERSION ${SPEC_VERSION}
 )
 
 if(WIN32)
   target_link_libraries(socketpair ws2_32)
-endif()
-
-install(
-  TARGETS socketpair
-  RUNTIME DESTINATION ${CMAKE_INSTALL_SBINDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/icinga2
-)
-
-if(APPLE)
-  install(
-    TARGETS socketpair
-    LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR}/icinga-studio.app/Contents
-  )
 endif()

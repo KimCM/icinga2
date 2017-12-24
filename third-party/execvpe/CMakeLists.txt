@@ -19,24 +19,10 @@ set(execvpe_SOURCES
   execvpe.c execvpe.h
 )
 
-add_library(execvpe SHARED ${execvpe_SOURCES})
+add_library(execvpe STATIC ${execvpe_SOURCES})
 
 set_target_properties (
   execvpe PROPERTIES
   DEFINE_SYMBOL I2_EXECVPE_BUILD
   FOLDER Lib
-  VERSION ${SPEC_VERSION}
 )
-
-install(
-  TARGETS execvpe
-  RUNTIME DESTINATION ${CMAKE_INSTALL_SBINDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/icinga2
-)
-
-if(APPLE)
-  install(
-    TARGETS execvpe
-    LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR}/icinga-studio.app/Contents
-  )
-endif()
