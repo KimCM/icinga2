@@ -69,10 +69,9 @@ endif()
 
 add_library(remote SHARED ${remote_SOURCES})
 
-include_directories(${Boost_INCLUDE_DIRS})
-target_link_libraries(remote ${Boost_LIBRARIES} base config)
+target_link_libraries(remote PRIVATE ${Boost_REGEX_LIBRARY} ${OPENSSL_LIBRARIES} base config)
 
-set_target_properties (
+set_target_properties(
   remote PROPERTIES
   INSTALL_RPATH ${CMAKE_INSTALL_FULL_LIBDIR}/icinga2
   DEFINE_SYMBOL I2_REMOTE_BUILD

@@ -48,9 +48,9 @@ endif()
 add_library(db_ido SHARED ${db_ido_SOURCES})
 
 include_directories(${Boost_INCLUDE_DIRS})
-target_link_libraries(db_ido ${Boost_LIBRARIES} base config icinga remote)
+target_link_libraries(db_ido PRIVATE base config remote icinga)
 
-set_target_properties (
+set_target_properties(
   db_ido PROPERTIES
   INSTALL_RPATH ${CMAKE_INSTALL_FULL_LIBDIR}/icinga2
   DEFINE_SYMBOL I2_DB_IDO_BUILD

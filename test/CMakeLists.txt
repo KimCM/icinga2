@@ -52,7 +52,7 @@ endif()
 
 add_boost_test(base
   SOURCES test-runner.cpp ${base_test_SOURCES}
-  LIBRARIES base config icinga
+  LIBRARIES ${Boost_SYSTEM_LIBRARY} base config remote icinga
   TESTS base_array/construct
         base_array/getset
         base_array/resize
@@ -138,6 +138,11 @@ add_boost_test(base
         remote_url/illegal_legal_strings
 )
 
+set_target_properties(
+  ${base_TARGET_NAME} PROPERTIES
+  FOLDER Test
+)
+
 if(ICINGA2_WITH_LIVESTATUS)
   set(livestatus_test_SOURCES
     livestatus-fixture.cpp
@@ -150,9 +155,14 @@ if(ICINGA2_WITH_LIVESTATUS)
 
   add_boost_test(livestatus
     SOURCES test-runner.cpp ${livestatus_test_SOURCES}
-    LIBRARIES base config icinga livestatus
+    LIBRARIES ${Boost_SYSTEM_LIBRARY} base config icinga livestatus
     DEPENDENCIES methods
     TESTS livestatus/hosts livestatus/services
+  )
+
+  set_target_properties(
+    ${livestatus_TARGET_NAME} PROPERTIES
+    FOLDER Test
   )
 endif()
 
@@ -167,9 +177,14 @@ endif()
 
 add_boost_test(icinga_checkable
   SOURCES test-runner.cpp ${icinga_checkable_test_SOURCES}
-  LIBRARIES base config icinga cli
+  LIBRARIES ${Boost_SYSTEM_LIBRARY} base config icinga cli
   TESTS icinga_checkable_flapping/host_not_flapping
         icinga_checkable_flapping/host_flapping
         icinga_checkable_flapping/host_flapping_recover
         icinga_checkable_flapping/host_flapping_docs_example
+)
+
+set_target_properties(
+  ${icinga_checkable_TARGET_NAME} PROPERTIES
+  FOLDER Test
 )

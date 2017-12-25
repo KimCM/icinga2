@@ -37,9 +37,9 @@ endif()
 
 add_library(perfdata SHARED ${perfdata_SOURCES})
 
-target_link_libraries(perfdata ${Boost_LIBRARIES} base config icinga)
+target_link_libraries(perfdata PRIVATE base remote icinga)
 
-set_target_properties (
+set_target_properties(
   perfdata PROPERTIES
   INSTALL_RPATH ${CMAKE_INSTALL_FULL_LIBDIR}/icinga2
   DEFINE_SYMBOL I2_PERFDATA_BUILD

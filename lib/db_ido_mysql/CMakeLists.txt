@@ -31,9 +31,9 @@ if(MYSQL_FOUND)
   add_library(db_ido_mysql SHARED ${db_ido_mysql_SOURCES})
 
   include_directories(${MYSQL_INCLUDE_DIR})
-  target_link_libraries(db_ido_mysql ${Boost_LIBRARIES} ${MYSQL_CLIENT_LIBS} base config icinga db_ido)
+  target_link_libraries(db_ido_mysql PRIVATE ${MYSQL_CLIENT_LIBS} base remote db_ido)
 
-  set_target_properties (
+  set_target_properties(
     db_ido_mysql PROPERTIES
     INSTALL_RPATH ${CMAKE_INSTALL_FULL_LIBDIR}/icinga2
     DEFINE_SYMBOL I2_DB_IDO_MYSQL_BUILD

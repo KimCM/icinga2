@@ -17,7 +17,7 @@
 
 add_executable(check_nscp_api check_nscp_api.cpp)
 
-target_link_libraries( check_nscp_api ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_SYSTEM_LIBRARY} base remote)
+target_link_libraries(check_nscp_api PRIVATE ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} base remote)
 
 set_target_properties(
   check_nscp_api PROPERTIES
@@ -60,7 +60,7 @@ if (WIN32)
     string(REGEX REPLACE ".cpp\$" ".h" check_HEADER "${source}")
 
     add_executable(${check_OUT} ${source} ${check_HEADER})
-    target_link_libraries(${check_OUT} thresholds Shlwapi.lib ${Boost_PROGRAM_OPTIONS_LIBRARY})
+    target_link_libraries(${check_OUT} PRIVATE thresholds Shlwapi.lib ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
     set_target_properties(
       ${check_OUT} PROPERTIES
@@ -70,13 +70,13 @@ if (WIN32)
     )
   endforeach()
 
-  target_link_libraries(check_load Pdh.lib)
-  target_link_libraries(check_network Pdh.lib Iphlpapi.lib)
-  target_link_libraries(check_perfmon Pdh.lib)
-  target_link_libraries(check_ping Ntdll.lib iphlpapi.lib Ws2_32.lib)
-  target_link_libraries(check_procs Pdh.lib)
-  target_link_libraries(check_uptime ${Boost_SYSTEM_LIBRARY})
-  target_link_libraries(check_users wtsapi32.lib)
+  target_link_libraries(check_load PRIVATE Pdh.lib)
+  target_link_libraries(check_network PRIVATE Pdh.lib Iphlpapi.lib)
+  target_link_libraries(check_perfmon PRIVATE Pdh.lib)
+  target_link_libraries(check_ping PRIVATE Ntdll.lib iphlpapi.lib Ws2_32.lib)
+  target_link_libraries(check_procs PRIVATE Pdh.lib)
+  target_link_libraries(check_uptime PRIVATE ${Boost_SYSTEM_LIBRARY})
+  target_link_libraries(check_users PRIVATE wtsapi32.lib)
 
   install(
     TARGETS check_disk check_load check_memory check_network check_perfmon check_procs

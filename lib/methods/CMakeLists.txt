@@ -46,9 +46,9 @@ endif()
 
 add_library(methods SHARED ${methods_SOURCES})
 
-target_link_libraries(methods ${Boost_LIBRARIES} base config icinga)
+target_link_libraries(methods PRIVATE base config remote icinga)
 
-set_target_properties (
+set_target_properties(
   methods PROPERTIES
   INSTALL_RPATH ${CMAKE_INSTALL_FULL_LIBDIR}/icinga2
   DEFINE_SYMBOL I2_METHODS_BUILD

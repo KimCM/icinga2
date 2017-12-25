@@ -29,7 +29,7 @@ set(icinga_app_SOURCES
 add_executable(icinga-app ${icinga_app_SOURCES})
 
 include_directories(${Boost_INCLUDE_DIRS})
-target_link_libraries(icinga-app ${Boost_LIBRARIES} base config cli)
+target_link_libraries(icinga-app PRIVATE ${Boost_PROGRAM_OPTIONS_LIBRARY} base config cli)
 
 set_target_properties (
   icinga-app PROPERTIES

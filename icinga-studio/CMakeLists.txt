@@ -31,13 +31,13 @@ set(icinga_studio_SOURCES
   aboutform.cpp aboutform.hpp
   connectform.cpp connectform.hpp
   mainform.cpp mainform.hpp
-  icinga.icns ${WindowsSources})
+  icinga.icns
+  ${WindowsSources}
 )
 
 add_executable(icinga-studio MACOSX_BUNDLE WIN32 ${icinga_studio_SOURCES})
 
-include_directories(${Boost_INCLUDE_DIRS})
-target_link_libraries(icinga-studio ${Boost_LIBRARIES} ${wxWidgets_LIBRARIES} base remote)
+target_link_libraries(icinga-studio PRIVATE ${wxWidgets_LIBRARIES} base remote)
 
 if(APPLE)
   set_source_files_properties(icinga.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)

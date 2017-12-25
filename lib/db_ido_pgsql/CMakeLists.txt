@@ -33,9 +33,9 @@ if(PostgreSQL_FOUND)
 
   add_library(db_ido_pgsql SHARED ${db_ido_pgsql_SOURCES})
 
-  target_link_libraries(db_ido_pgsql ${Boost_LIBRARIES} ${PostgreSQL_LIBRARIES} base config icinga db_ido)
+  target_link_libraries(db_ido_pgsql PRIVATE ${PostgreSQL_LIBRARIES} base remote db_ido)
 
-  set_target_properties (
+  set_target_properties(
     db_ido_pgsql PROPERTIES
     INSTALL_RPATH ${CMAKE_INSTALL_FULL_LIBDIR}/icinga2
     DEFINE_SYMBOL I2_DB_IDO_PGSQL_BUILD
