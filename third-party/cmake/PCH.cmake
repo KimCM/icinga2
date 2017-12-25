@@ -91,7 +91,8 @@ function(_add_precompiled_header target pch_target header reuse_pch_target)
     set(pch_header ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${pch_target}.dir/x-${header_name})
     set(pch_output ${pch_header}${pch_output_extension})
 
-    file(WRITE ${pch_source} "#include \"${header_path}\"")
+    set(pch_sources "")
+    list(APPEND pch_sources ${header_path})
 
     if(MSVC)
         # ensure pdb goes to the same location, otherwise we get C2859
@@ -134,12 +135,22 @@ function(_add_precompiled_header target pch_target header reuse_pch_target)
 
     if(reuse_pch_target)
         get_target_property(reuse_pch_source ${reuse_pch_target} PCH_SOURCE)
-        file(APPEND ${pch_source} "\n#include \"${reuse_pch_source}\"")
+        list(APPEND pch_sources ${reuse_pch_source})
 
         if(CMAKE_${lang}_COMPILER_ID STREQUAL "Clang" OR CMAKE_${lang}_COMPILER_ID STREQUAL "AppleClang")
             _use_pch_for_target(${pch_target} ${reuse_pch_target})
         endif()
     endif()
+
+    add_custom_command(
+      OUTPUT ${pch_source}
+      COMMAND mkunity
+      ARGS ${pch_sources} > ${pch_source}.tmp
+      COMMAND ${CMAKE_COMMAND}
+      ARGS -E copy ${pch_source}.tmp ${pch_source}
+      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+      DEPENDS mkunity ${pch_sources}
+    )
 
     get_target_property(deps ${target} LINK_LIBRARIES)
     if(deps)
